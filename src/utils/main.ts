@@ -49,7 +49,9 @@ export async function Main(argv: Arguments) {
   s.start("Generating commit message");
 
   const sender = new  SendDiff(data);
-  const response = await  sender.send().catch((err) => {log.error(err.message)}).then((res)=>res as String[]);
+  const response = await  sender.send().catch((err) => {
+    log.error(err.message)
+  }).then((res)=>res as String[]);
   s.stop("Commit message generated");
 
   // select commit message fro commiting ------------------------------------------------

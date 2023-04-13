@@ -39,7 +39,7 @@ export async function gitAdd(files :  String[]) {
                 resolve(stdout);
             }
         });
-    });
+    }).catch((err)=>{log.error(err.message)});
 }
 export async function gitDiff() {
     return new Promise<String>((resolve, reject) => {
