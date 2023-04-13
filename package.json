@@ -1,0 +1,26 @@
+{
+  "name": "gptcommit2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "gptcommit": "./build/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/yargs": "^17.0.24",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "clack": "^0.1.0",
+    "openai": "^3.2.1",
+    "yargs": "^17.7.1"
+  }
+}

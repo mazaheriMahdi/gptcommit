@@ -1,0 +1,24 @@
+{
+  "name": "clack",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alberto Gimeno <gimenete@gimenete.net>",
+  "license": "MIT",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "moment": "^2.13.0",
+    "pify": "^2.3.0",
+    "request": "^2.72.0",
+    "websocket": "^1.0.23"
+  },
+  "devDependencies": {
+    "standard": "^7.1.2"
+  },
+  "bin" : {
+    "clack" : "./index.js"
+  }
+}
