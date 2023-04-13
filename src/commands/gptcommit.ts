@@ -1,5 +1,5 @@
 import { Arguments, CommandBuilder } from "yargs";
-import  {Main}  from "../utils/main";
+import { Main } from "../utils/main";
 import { log } from "@clack/prompts";
 
 type Options = {
@@ -12,16 +12,12 @@ export const desc: string = "Generating AI commit messages";
 
 export const bulder: CommandBuilder<Options, Options> = (yargs) =>
   yargs.options({
-    a: { type: "boolean" } ,
+    a: { type: "boolean" },
     y: { type: "boolean" },
   });
 
 export const handler = (argv: Arguments<Options>): void => {
-    Main(argv).catch((err) => {
-        
-        log.error(err.message
-            
-            
-            
-            )});
+  Main(argv).catch((err) => {
+    log.error(err.message);
+  });
 };
