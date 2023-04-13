@@ -1,5 +1,6 @@
 
 import { readFile , existsSync } from "fs";
+import { ConfigNotFound } from "../../Exeptions/ConfigNotFound";
 export async function getConfig() : Promise<String[]>{
     if(existsSync("./config.txt")){
         return new Promise<String[]>((resolve , reject)=>{
@@ -12,7 +13,7 @@ export async function getConfig() : Promise<String[]>{
             })
         })
     }else{
-        throw new Error("You have not configured GptCommit yet. Please run gptCommit config to configure GptCommit")
+        throw new ConfigNotFound();
     }
     
 }

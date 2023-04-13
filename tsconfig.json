@@ -105,7 +105,7 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "rootDir": "./src",
-    "outDir": "./build",
+    "outDir": "./lib",
     "skipLibCheck": true  ,                               /* Skip type checking all .d.ts files. */
   }
 }
