@@ -2,12 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Main = void 0;
 const git_1 = require("./git");
-const openAi_1 = require("./openAi");
 const prompts_1 = require("@clack/prompts");
+const sendToOpenAI_1 = require("./openAi/sendToOpenAI");
 async function Main(argv) {
     (0, prompts_1.intro)("GPT-3 Commit Message Generator");
     // varilables ------------------------------------------------
-    const gptCommit = new openAi_1.GptCommit();
     const s = (0, prompts_1.spinner)();
     const fileList = await (0, git_1.getUnStagedFiles)();
     // add file to stagging area------------------------------------------------
@@ -18,12 +17,15 @@ async function Main(argv) {
     const selectedFiles = await (0, prompts_1.multiselect)({
         message: "Select files to add 🗃️",
         options: fileListOption,
-    }).then((res) => { (0, git_1.gitAdd)(res); });
+    }).then((res) => {
+        (0, git_1.gitAdd)(res);
+    });
     prompts_1.log.success("Files added");
     const data = await (0, git_1.gitDiff)();
     // start getting data from open ai------------------------------------------------
     s.start("Generating commit message");
-    const response = await gptCommit.getCommitMessage(data);
+    const sender = new sendToOpenAI_1.SendDiff(data);
+    const response = await sender.send();
     s.stop("Commit message generated");
     // select commit message fro commiting ------------------------------------------------
     prompts_1.log.info("Commit message:");

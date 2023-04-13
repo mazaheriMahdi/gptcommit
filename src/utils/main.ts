@@ -1,6 +1,6 @@
-import { gitDiff, commit, getUnStagedFiles, gitAdd} from "./git";
+import { gitDiff, commit, getUnStagedFiles, gitAdd } from "./git";
 import { Configuration, OpenAIApi } from "openai";
-import { GptCommit } from "./openAi";
+import { GptCommit } from "./openAi/openAi";
 import {
   intro,
   outro,
@@ -13,52 +13,44 @@ import {
   SelectOptions,
 } from "@clack/prompts";
 import { Arguments } from "yargs";
+import { getConfig } from "./config/getConfig";
+import { SendDiff } from "./openAi/sendToOpenAI";
 interface optionList {
   value: string;
   label: string;
   hint?: string | undefined;
 }
 
-
-export async function Main(argv : Arguments) {
+export async function Main(argv: Arguments) {
   intro("GPT-3 Commit Message Generator");
 
-  
   // varilables ------------------------------------------------
- 
-  const gptCommit = new GptCommit();
+
+  
   const s = spinner();
   const fileList = await getUnStagedFiles();
-
-
-
-
 
   // add file to stagging area------------------------------------------------
   const fileListOption: optionList[] = fileList.map((item) => {
     return { value: item, label: item } as optionList;
   });
-  fileListOption.push({ value: "*", label: "all" })
+  fileListOption.push({ value: "*", label: "all" });
   const selectedFiles = await multiselect({
     message: "Select files to add 🗃️",
     options: fileListOption,
-  }).then(
-    (res) =>{ gitAdd(res as String[])});
+  }).then((res) => {
+    gitAdd(res as String[]);
+  });
   log.success("Files added");
-
-
 
   const data = await gitDiff();
   // start getting data from open ai------------------------------------------------
 
   s.start("Generating commit message");
-  const response = await gptCommit.getCommitMessage(data);
+
+  const sender = new  SendDiff(data);
+  const response = await  sender.send();
   s.stop("Commit message generated");
-
-
-
-
-
 
   // select commit message fro commiting ------------------------------------------------
 
@@ -70,11 +62,6 @@ export async function Main(argv : Arguments) {
     message: "which commit message do you want to use ?",
     options: optionList,
   }).then((res) => res as String[]);
-
-
-
-
-
 
   // confrim that you want this commit message------------------------------------------------
 
@@ -92,10 +79,6 @@ export async function Main(argv : Arguments) {
     );
     s.stop("Commited 🍻");
   }
-
-
-
-
 
   // outro------------------------------------------------
 
