@@ -4,8 +4,8 @@ import { log } from "@clack/prompts";
 import { rejects } from "assert";
 export async function getConfig(): Promise<String[]> {
   return new Promise<String[]>((resolve, reject) => {
-    if (existsSync("./config.txt")) {
-      readFile("./config.txt", (err, data) => {
+    if (existsSync("./.gptcommit")) {
+      readFile("./.gptcommit", (err, data) => {
         if (err) {
           reject(err);
         } else {
