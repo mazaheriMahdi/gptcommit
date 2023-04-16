@@ -28,10 +28,11 @@ export async function getUnStagedFiles() {
     });
     
 }
+
+
+
 export async function gitAdd(files :  String[]) {
     return new Promise<String>((resolve, reject) => {
-        
-        
         exec('git add '+ files.join(" "), (error, stdout) => {
             if (error) {
                 reject(error);
@@ -41,6 +42,9 @@ export async function gitAdd(files :  String[]) {
         });
     }).catch((err)=>{log.error(err.message)});
 }
+
+
+
 export async function gitDiff() {
     return new Promise<String>((resolve, reject) => {
         exec('git diff --staged --ignore-space-change',  (error, stdout) => {
