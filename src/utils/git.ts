@@ -49,9 +49,14 @@ export async function gitDiff() {
         exec('git diff --staged --ignore-space-change',  (error, stdout) => {
             if (error) {
                 reject(error);
-            } else {
+            } 
+            else if (stdout.length < 10) {
+                reject(new Error("No changes to commit"));
+            }
+            else {
                 resolve(stdout);
             }
+
         });
     });
 }
