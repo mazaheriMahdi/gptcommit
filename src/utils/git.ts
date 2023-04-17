@@ -2,10 +2,9 @@ import {exec} from 'child_process';
 import {log} from '@clack/prompts';
 import { resolve } from 'path';
 
-
 export async function commit(message: String) : Promise<String> {
-    return new Promise<String> ((resolve , reject)=>{
-        exec('git commit -m "' + message + '"', (error, date) => {
+    return new Promise<String> ((resolve , reject)=>{        
+        exec("git commit -m '" + message + "'", (error, date) => {
             if (error) {
                 log.error(error.message);
             }
