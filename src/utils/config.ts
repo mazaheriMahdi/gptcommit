@@ -11,33 +11,34 @@ import {
 import { TextPrompt } from "@clack/core";
 import { writeFileSync } from "fs";
 import { json } from "stream/consumers";
+import { API_KEY_NOT_VALID, API_KEY_PLACEHOLDER, CONFIG_INTRO_MESSAGE, CONFIG_OUTRO_MESSAGE, MORE_THAN_TEN_COMMIT_MESSAGES, NOT_VALID_NUMBER, NUMBER_OF_COMMIT_MESSAGES, NUMBER_OF_COMMIT_MESSAGES_PLACEHOLDER, YOUR_API_KEY } from "../messages/messages";
 
 export async function config() {
-  intro("GptCommit Config");
+  intro(CONFIG_INTRO_MESSAGE);
   var regex = /^(sk-).{48}/;
   const apiKey = await text({
-    message: "Your OpenAi Api key",
-    placeholder: "sl-***************************",
+    message: YOUR_API_KEY,
+    placeholder: API_KEY_PLACEHOLDER,
     validate(value) {
       if (!regex.test(value)) {
-        return "Invalid Api Key";
+        return API_KEY_NOT_VALID;
       }
     },
   });
   const numberOfCommitMessages = await text({
-    message: "Number of commit messages to generate",
-    placeholder: "3",
+    message: NUMBER_OF_COMMIT_MESSAGES,
+    placeholder: NUMBER_OF_COMMIT_MESSAGES_PLACEHOLDER,
     validate(value) {
       if (isNaN(Number(value)) || Number(value) <= 0) {
-        return "Please enter a valid number";
+        return NOT_VALID_NUMBER;
       } else if (Number(value) > 10) {
-        return "Generating more than 10 commit messages is not allowed 😔";
+        return MORE_THAN_TEN_COMMIT_MESSAGES;
       }
     },
   });
   const file = writeFileSync(
     "./.gptcommit",
     apiKey.toString() + "\n" + numberOfCommitMessages.toString()
-  );
-  outro("You have successfully configured GptCommit 🍺");
+   );
+  outro(CONFIG_OUTRO_MESSAGE);
 }

@@ -1,5 +1,7 @@
+import { CONFIG_NOT_FOUND } from "../messages/messages";
+
 export class ConfigNotFound extends Error {
   constructor() {
-    super('You have not configured GptCommit yet. Please run gptCommit config to configure GptCommit');
+    super(CONFIG_NOT_FOUND);
   }
 }

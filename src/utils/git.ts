@@ -1,6 +1,7 @@
 import {exec} from 'child_process';
 import {log} from '@clack/prompts';
 import { resolve } from 'path';
+import { NO_CHANGES_TO_COMMIT } from '../messages/messages';
 
 export async function commit(message: String) : Promise<String> {
     return new Promise<String> ((resolve , reject)=>{        
@@ -51,7 +52,7 @@ export async function gitDiff() {
                 reject(error);
             } 
             else if (stdout.length < 10) {
-                reject(new Error("No changes to commit"));
+                reject(new Error(NO_CHANGES_TO_COMMIT));
             }
             else {
                 resolve(stdout);
@@ -60,3 +61,4 @@ export async function gitDiff() {
         });
     });
 }
+

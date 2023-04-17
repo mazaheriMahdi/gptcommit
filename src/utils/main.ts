@@ -15,6 +15,7 @@ import {
 import { Arguments } from "yargs";
 import { getConfig } from "./config/getConfig";
 import { SendDiff } from "./openAi/sendToOpenAI";
+import { COMMITED, COMMITING, COMMIT_INTRO_MESSAGE, COMMIT_MESSAGE_GENERATED, COMMIT_OUTRO_MESSAGE, DO_YOU_WANT_TO_COMMIT, FILES_ADDED, GENERATING_COMMIT_MESSAGE, SELECT_FILES_TO_ADD, WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE } from "../messages/messages";
 interface optionList {
   value: string;
   label: string;
@@ -22,7 +23,7 @@ interface optionList {
 }
 
 export async function Main(argv: Arguments) {
-  intro("GPT-3 Commit Message Generator");
+  intro(COMMIT_INTRO_MESSAGE);
 
   // varilables ------------------------------------------------
 
@@ -34,55 +35,54 @@ export async function Main(argv: Arguments) {
   const fileListOption: optionList[] = fileList.map((item) => {
     return { value: item, label: item } as optionList;
   });
-  fileListOption.push({ value: "*", label: "all" });
+  fileListOption.push({ value: "*", label: "All" });
   const selectedFiles = await multiselect({
-    message: "Select files to add 🗃️",
+    message: SELECT_FILES_TO_ADD,
     options: fileListOption,
   }).then((res) => {
     gitAdd(res as String[]);
   });
-  log.success("Files added");
+  log.success(FILES_ADDED);
 
   const data = await gitDiff();
   // start getting data from open ai------------------------------------------------
 
-  s.start("Generating commit message");
+  s.start(GENERATING_COMMIT_MESSAGE);
 
   const sender = new  SendDiff(data);
   const response = await  sender.send().catch((err) => {
     log.error(err.message)
   }).then((res)=>res as String[]);
-  s.stop("Commit message generated");
+  s.stop(COMMIT_MESSAGE_GENERATED);
 
   // select commit message fro commiting ------------------------------------------------
 
-  log.info("Commit message:");
   const optionList: optionList[] = response.map((item) => {
     return { value: item, label: item } as optionList;
   });
   const commitMessage = await multiselect({
-    message: "which commit message do you want to use ?",
+    message:WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE,
     options: optionList,
   }).then((res) => res as String[]);
 
   // confrim that you want this commit message------------------------------------------------
 
   const confrim = await select({
-    message: "Do you want to commit ?",
+    message: DO_YOU_WANT_TO_COMMIT,
     options: [
       { value: true, label: "Yes" },
       { value: false, label: "No" },
     ],
   }).then((value) => value as boolean);
   if (confrim) {
-    s.start("Committing");
+    s.start(COMMITING);
     await commit(
       commitMessage.length > 1 ? commitMessage.join("\n") : commitMessage[0]
     );
-    s.stop("Commited 🍻");
+    s.stop(COMMITED);
   }
 
   // outro------------------------------------------------
 
-  outro("Commit message generated");
+  outro(COMMIT_OUTRO_MESSAGE);
 }
