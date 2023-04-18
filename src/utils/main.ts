@@ -21,7 +21,8 @@ interface optionList {
   label: string;
   hint?: string | undefined;
 }
-
+// TODO : let uesr edit commit message
+// TODO : make global config file
 export async function Main(argv: Arguments) {
   intro(COMMIT_INTRO_MESSAGE);
 
