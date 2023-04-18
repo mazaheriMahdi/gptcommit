@@ -6,7 +6,7 @@ A tool for creating commit messages using **GPT-3**
 
 
 ## Demo
-![demo](https://github.com/mazaheriMahdi/gptcommit/blob/master/demo/demo.mp4)
+![demo](https://github.com/mazaheriMahdi/gptcommit/blob/master/demo/demo.gif)
 ## Installation
 
 Install gptcommit with npm
