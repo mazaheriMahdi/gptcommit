@@ -15,12 +15,11 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "@types/yargs": "^17.0.24",
-    "typescript": "^5.0.4"
+    "@types/yargs": "^17.0.24"
   },
   "dependencies": {
-    "@clack/prompts": "^0.6.3",
-    "clack": "^0.1.0",
+    "@clack/prompts": "latest",
+    "@clack/core": "latest",
     "openai": "^3.2.1",
     "yargs": "^17.7.1"
   },
