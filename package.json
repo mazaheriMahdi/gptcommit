@@ -1,6 +1,6 @@
 {
   "name": "@mazaherimahdi/gptcommit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A tool for creating commit messages using GPT-3",
   "licenses": "MIT",
   "main": "index.js",
@@ -10,7 +10,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "gpt3",
+    "gpt-3",
+    "commit",
+    "commit message",
+    "commit messages",
+    "gptcommit",
+    "gpt-commit",
+    "gpt-commit-message",
+    "gpt-commit-messages",
+    "gpt-commit-message-generator",
+    "gpt-commit-messag"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -23,7 +35,6 @@
     "openai": "^3.2.1",
     "yargs": "^17.7.1"
   },
-  "keywords" : ["gpt3", "gpt-3", "commit", "commit message", "commit messages", "gptcommit", "gpt-commit", "gpt-commit-message", "gpt-commit-messages", "gpt-commit-message-generator", "gpt-commit-messag"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mazaheriMahdi/gptcommit.git"
