@@ -23,6 +23,7 @@
     "openai": "^3.2.1",
     "yargs": "^17.7.1"
   },
+  "keywords" : ["gpt3", "gpt-3", "commit", "commit message", "commit messages", "gptcommit", "gpt-commit", "gpt-commit-message", "gpt-commit-messages", "gpt-commit-message-generator", "gpt-commit-messag"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mazaheriMahdi/gptcommit.git"
