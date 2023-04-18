@@ -1,6 +1,6 @@
 {
   "name": "@mazaherimahdi/gptcommit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tool for creating commit messages using GPT-3",
   "licenses": "MIT",
   "main": "index.js",
