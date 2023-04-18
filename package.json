@@ -1,7 +1,8 @@
 {
-  "name": "gptcommit2",
+  "name": "@mazaherimahdi/gptcommit",
   "version": "1.0.0",
-  "description": "",
+  "description": "A tool for creating commit messages using GPT-3",
+  "licenses": "MIT",
   "main": "index.js",
   "bin": {
     "gptcommit": "./lib/cli.js"
@@ -22,5 +23,13 @@
     "clack": "^0.1.0",
     "openai": "^3.2.1",
     "yargs": "^17.7.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mazaheriMahdi/gptcommit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mazaheriMahdi/gptcommit/issues"
+  },
+  "homepage": "https://github.com/mazaheriMahdi/gptcommit#readme"
 }
