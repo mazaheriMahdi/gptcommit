@@ -51,7 +51,7 @@ export async function gitDiff() {
             if (error) {
                 reject(error);
             } 
-            else if (stdout.length < 10) {
+            else if (stdout === "") {
                 reject(new Error(NO_CHANGES_TO_COMMIT));
             }
             else {
