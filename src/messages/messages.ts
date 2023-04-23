@@ -24,3 +24,4 @@ export const DO_YOU_WANT_TO_COMMIT = "Do you want to commit ? ";
 export const COMMITING = "Committing";
 export const COMMITED = "Commited 🍻";
 export const COMMIT_OUTRO_MESSAGE = "You have successfully committed your changes 🍺";
+export const DO_WANT_TO_EDIT = "Do you want to edit commit message";

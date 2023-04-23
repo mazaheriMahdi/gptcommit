@@ -11,11 +11,13 @@ import {
   multiselect,
   TextOptions,
   SelectOptions,
+  text
 } from "@clack/prompts";
 import { Arguments } from "yargs";
 import { getConfig } from "./config/getConfig";
 import { SendDiff } from "./openAi/sendToOpenAI";
-import { COMMITED, COMMITING, COMMIT_INTRO_MESSAGE, COMMIT_MESSAGE_GENERATED, COMMIT_OUTRO_MESSAGE, DO_YOU_WANT_TO_COMMIT, FILES_ADDED, GENERATING_COMMIT_MESSAGE, SELECT_FILES_TO_ADD, WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE } from "../messages/messages";
+import { COMMITED, COMMITING, COMMIT_INTRO_MESSAGE, COMMIT_MESSAGE_GENERATED, COMMIT_OUTRO_MESSAGE, DO_WANT_TO_EDIT, DO_YOU_WANT_TO_COMMIT, FILES_ADDED, GENERATING_COMMIT_MESSAGE, SELECT_FILES_TO_ADD, WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE } from "../messages/messages";
+
 interface optionList {
   value: string;
   label: string;
@@ -66,6 +68,26 @@ export async function Main(argv: Arguments) {
     options: optionList,
   }).then((res) => res as String[]);
 
+
+  const doYouWantToEdit = await select({
+    message : DO_WANT_TO_EDIT,
+    options : [
+      {value : true , label : "Yes"},
+      {value : false , label : "No"},
+    ]
+  });
+  let joinedCommitMeassage = commitMessage.join("\n");
+  if(doYouWantToEdit){
+    const editCommitMessage = await text({
+      message : "Edit commit message",
+      initialValue : joinedCommitMeassage,
+      validate : (value) => {
+        if(value == joinedCommitMeassage){
+          return "Please change the commit message and then hit enter";
+      }
+      
+    }}).then((value)=> joinedCommitMeassage = value as string);
+  }
   // confrim that you want this commit message------------------------------------------------
 
   const confrim = await select({
@@ -78,7 +100,7 @@ export async function Main(argv: Arguments) {
   if (confrim) {
     s.start(COMMITING);
     await commit(
-      commitMessage.length > 1 ? commitMessage.join("\n") : commitMessage[0]
+      joinedCommitMeassage
     );
     s.stop(COMMITED);
   }
