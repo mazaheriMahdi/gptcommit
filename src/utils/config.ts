@@ -36,9 +36,16 @@ export async function config() {
       }
     },
   });
+
   const file = writeFileSync(
     "./.gptcommit",
     apiKey.toString() + "\n" + numberOfCommitMessages.toString()
    );
+
+  const addToGitIgnore = writeFileSync(
+    "./.gitignore",
+    "\n.gptcommit"
+   );
+
   outro(CONFIG_OUTRO_MESSAGE);
 }
