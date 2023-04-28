@@ -11,12 +11,24 @@ import {
   multiselect,
   TextOptions,
   SelectOptions,
-  text
+  text,
 } from "@clack/prompts";
 import { Arguments } from "yargs";
 import { getConfig } from "./config/getConfig";
 import { SendDiff } from "./openAi/sendToOpenAI";
-import { COMMITED, COMMITING, COMMIT_INTRO_MESSAGE, COMMIT_MESSAGE_GENERATED, COMMIT_OUTRO_MESSAGE, DO_WANT_TO_EDIT, DO_YOU_WANT_TO_COMMIT, FILES_ADDED, GENERATING_COMMIT_MESSAGE, SELECT_FILES_TO_ADD, WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE } from "../messages/messages";
+import {
+  COMMITED,
+  COMMITING,
+  COMMIT_INTRO_MESSAGE,
+  COMMIT_MESSAGE_GENERATED,
+  COMMIT_OUTRO_MESSAGE,
+  DO_WANT_TO_EDIT,
+  DO_YOU_WANT_TO_COMMIT,
+  FILES_ADDED,
+  GENERATING_COMMIT_MESSAGE,
+  SELECT_FILES_TO_ADD,
+  WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE,
+} from "../messages/messages";
 
 interface optionList {
   value: string;
@@ -30,7 +42,6 @@ export async function Main(argv: Arguments) {
 
   // varilables ------------------------------------------------
 
-  
   const s = spinner();
   const fileList = await getUnStagedFiles();
 
@@ -46,47 +57,47 @@ export async function Main(argv: Arguments) {
     gitAdd(res as String[]);
   });
   log.success(FILES_ADDED);
-
+  s.start("getting git diff data");
   const data = await gitDiff();
+  s.stop("got git diff data");
   // start getting data from open ai------------------------------------------------
-  
   s.start(GENERATING_COMMIT_MESSAGE);
-
-  const sender = new  SendDiff(data);
-  const response = await  sender.send().catch((err) => {
-    log.error(err.message)
-  }).then((res)=>res as String[]);
+  const sender = new SendDiff(data);
+  const response = await sender
+    .send()
+    .catch((err) => {
+      log.error(err.message);
+    })
+    .then((res) => res as String[]);
   s.stop(COMMIT_MESSAGE_GENERATED);
-
   // select commit message fro commiting ------------------------------------------------
 
   const optionList: optionList[] = response.map((item) => {
     return { value: item, label: item } as optionList;
   });
   const commitMessage = await multiselect({
-    message:WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE,
+    message: WHICH_COMMIT_MESSAGE_DO_YOU_WANT_TO_USE,
     options: optionList,
   }).then((res) => res as String[]);
 
-
   const doYouWantToEdit = await select({
-    message : DO_WANT_TO_EDIT,
-    options : [
-      {value : true , label : "Yes"},
-      {value : false , label : "No"},
-    ]
+    message: DO_WANT_TO_EDIT,
+    options: [
+      { value: true, label: "Yes" },
+      { value: false, label: "No" },
+    ],
   });
   let joinedCommitMeassage = commitMessage.join("\n");
-  if(doYouWantToEdit){
+  if (doYouWantToEdit) {
     const editCommitMessage = await text({
-      message : "Edit commit message",
-      initialValue : joinedCommitMeassage,
-      validate : (value) => {
-        if(value == joinedCommitMeassage){
+      message: "Edit commit message",
+      initialValue: joinedCommitMeassage,
+      validate: (value) => {
+        if (value == joinedCommitMeassage) {
           return "Please change the commit message and then hit enter";
-      }
-      
-    }}).then((value)=> joinedCommitMeassage = value as string);
+        }
+      },
+    }).then((value) => (joinedCommitMeassage = value as string));
   }
   // confrim that you want this commit message------------------------------------------------
 
@@ -99,9 +110,7 @@ export async function Main(argv: Arguments) {
   }).then((value) => value as boolean);
   if (confrim) {
     s.start(COMMITING);
-    await commit(
-      joinedCommitMeassage
-    );
+    await commit(joinedCommitMeassage);
     s.stop(COMMITED);
   }
 
