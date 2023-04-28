@@ -49,7 +49,7 @@ export async function Main(argv: Arguments) {
 
   const data = await gitDiff();
   // start getting data from open ai------------------------------------------------
-
+  
   s.start(GENERATING_COMMIT_MESSAGE);
 
   const sender = new  SendDiff(data);
